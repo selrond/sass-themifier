@@ -1,0 +1,19 @@
+@mixin themify($themes: $themes) {
+	@each $theme, $theme-styles in $themes {
+
+		.#{$theme} & {
+			$theme-map: () !global;
+			@each $property, $value-group in $theme-styles {
+				$value: map-get(map-get($themes, $theme), '#{$property}');
+				$theme-map: map-merge($theme-map, ($property: $value)) !global;
+			}
+			@content;
+			$theme-map: null !global;
+		}
+
+	}
+}
+
+@function themed($property) {
+	@return map-get($theme-map, $property);
+}
